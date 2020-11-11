@@ -3,9 +3,28 @@ const dbPromise = require("./db.js");
 
 const express = require("express");
 const morgan = require("morgan");
+const pug = require("pug");
+
 const app = express();
 
 app.use(morgan("dev"));
+
+const makeHtml = pug.compileFile("template.pug");
+app.get("/", async (req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    res.send(makeHtml());
+    return;
+  }
+  const result = await dbPromise.all(`SELECT * from dict WHERE word like ?`, [
+    q,
+  ]);
+  result.forEach(({translation}, idx) => {
+    result[idx].translation = translation.replace(/\\n/g, "\n");
+  })
+  debug("Find %d matches", result.length);
+  res.send(makeHtml({ q, result }));
+});
 
 app.get("/api/search", async (req, res) => {
   debug("Query params: %o", req.query);

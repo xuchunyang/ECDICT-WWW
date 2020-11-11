@@ -1,0 +1,22 @@
+doctype html
+html(lang="zh")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title 搜索《简明英汉词典》
+    style.
+      dd { white-space: pre-wrap; }
+  body
+    h1 搜索《简明英汉词典》
+    form
+      label(for="search") 输入单词
+      input(id="search" name="q" type="search")
+      button 搜索
+    div(id="result")
+      if q
+        p Find #{result.length} matches
+        dl
+          for val in result
+            dt #{val.word}
+            dd #{val.translation}
+      else
