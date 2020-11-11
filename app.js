@@ -9,7 +9,7 @@ const app = express();
 
 app.use(morgan("dev"));
 
-app.use(express.static(("public")));
+app.use(express.static("public"));
 
 const makeHtml = pug.compileFile("template.pug");
 app.get("/", async (req, res) => {
@@ -26,6 +26,10 @@ app.get("/", async (req, res) => {
   });
   debug("Find %d matches", result.length);
   res.send(makeHtml({ q, result }));
+});
+
+app.get("/api/oxford-3000", async (req, res) => {
+  res.json(await dbPromise.all("select * from dict where oxford = '1'"));
 });
 
 app.get("/api/list", async (req, res) => {
