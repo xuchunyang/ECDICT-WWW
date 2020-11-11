@@ -1,4 +1,7 @@
-const sqlite3 = require("sqlite3").verbose();
+const sqlite3 =
+  process.env.NODE_ENV === "production"
+    ? require("sqlite3")
+    : require("sqlite3").verbose();
 const db = new sqlite3.Database("ecdict.sqlite");
 
 const dbPromise = {

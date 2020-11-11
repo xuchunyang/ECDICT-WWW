@@ -2,7 +2,10 @@ const debug = require("debug")("app");
 const dbPromise = require("./db.js");
 
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
+
+app.use(morgan("dev"));
 
 app.get("/api/search", async (req, res) => {
   debug("Query params: %o", req.query);
