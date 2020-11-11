@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Awesomplete</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css"
+      integrity="sha512-RT/9M3vzjYojy97YiNTZbyrQ4nJ+gNoinZKTGSVvLITijfQIAIDNicUe+U2KaeOWo9j7IbRzRisx/7eglOc+wA=="
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        text-align: center;
+        max-width: 40em;
+        margin: 0 auto;
+      }
+
+      form {
+        font-size: 1.3em;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 5px 10px;
+      }
+
+      .awesomplete {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>试一试 Awesomplete 的效果</h1>
+    <form>
+      <label for="search">Search</label>
+      <input id="search" type="search" />
+    </form>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.js"
+      integrity="sha512-t3zV/oAkSZUrvb/7p1q1+uh/i56JinQ+bmiulnHhbHZc7dq09CxJ1BByyi7A4+lF76+CcJtSVFtb7na7Oe7Cgg=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const searchInput = document.querySelector("#search");
+      searchInput.disabled = true;
+      fetch("/api/list")
+        .then((response) => response.json())
+        .then((words) => {
+          searchInput.disabled = false;
+          new Awesomplete(searchInput, { list: words, sort: false });
+        });
+    </script>
+  </body>
+</html>

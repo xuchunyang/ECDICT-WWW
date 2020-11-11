@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>测试 fuse.js</title>
+    <style>
+      body {
+        text-align: center;
+        max-width: 40em;
+        margin: 0 auto;
+      }
+
+      form {
+        font-size: 1.3em;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <label for="search">Search</label>
+      <input id="search" type="search" />
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.3"></script>
+    <script>
+      let fuse;
+      fetch("/api/list")
+        .then((r) => r.json())
+        .then((words) => {
+          fuse = new Fuse(words, { threshold: 0.0 });
+          console.log(fuse.search("apple"));
+        });
+    </script>
+  </body>
+</html>

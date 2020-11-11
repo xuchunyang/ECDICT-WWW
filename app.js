@@ -9,6 +9,8 @@ const app = express();
 
 app.use(morgan("dev"));
 
+app.use(express.static(("public")));
+
 const makeHtml = pug.compileFile("template.pug");
 app.get("/", async (req, res) => {
   const { q } = req.query;
@@ -19,11 +21,17 @@ app.get("/", async (req, res) => {
   const result = await dbPromise.all(`SELECT * from dict WHERE word like ?`, [
     q,
   ]);
-  result.forEach(({translation}, idx) => {
+  result.forEach(({ translation }, idx) => {
     result[idx].translation = translation.replace(/\\n/g, "\n");
-  })
+  });
   debug("Find %d matches", result.length);
   res.send(makeHtml({ q, result }));
+});
+
+app.get("/api/list", async (req, res) => {
+  res.json(
+    (await dbPromise.all("select word from dict")).map(({ word }) => word)
+  );
 });
 
 app.get("/api/search", async (req, res) => {
