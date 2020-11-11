@@ -5,13 +5,18 @@ const dbPromise = {
   db,
 };
 
-dbPromise.get = (query, params) => {
-  return new Promise((resolve, reject) => {
-    db.get(query, params, (err, res) => {
-      if (err) reject(err);
-      else resolve(res);
+const promisify = (fun) => {
+  return (query, params) => {
+    return new Promise((resolve, reject) => {
+      fun.bind(db)(query, params, (err, res) => {
+        if (err) reject(err);
+        else resolve(res);
+      });
     });
-  });
+  };
 };
+
+dbPromise.get = promisify(db.get);
+dbPromise.all = promisify(db.all);
 
 module.exports = dbPromise;

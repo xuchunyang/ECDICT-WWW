@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "entr": "ls *.js | entr -r node app.js"
+    "entr": "ls *.js | DEBUG=app entr -r node app.js"
   },
   "keywords": [],
   "author": "Xu Chunyang",

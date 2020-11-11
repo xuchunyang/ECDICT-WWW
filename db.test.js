@@ -15,3 +15,8 @@ test("可以查到 hello", async () => {
   const result = await dbPromise.get("select * from dict where word = 'hello'");
   expect(result).toBeDefined();
 });
+
+test("可以查到以 good 开头的单词", async () => {
+  const result = await dbPromise.all("select * from dict where word like 'good%'");
+  expect(result.length).toBeGreaterThan(0);
+})
